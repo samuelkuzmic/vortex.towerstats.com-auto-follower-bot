@@ -1,0 +1,52 @@
+let id = 1;
+const maxId = 2500;
+
+function runVortexBot() {
+    if (id > maxId) {
+        console.clear();
+        console.log(" Finished 2500 profiles.");
+        return;
+    }
+
+    // THE EXACT URL: https://vortex.towerstats.com/users/1/profile
+    let url = "https://vortex.towerstats.com/users/" + id + "/profile";
+
+    // Open in a NEW WINDOW (dimensions force window over tab)
+    let win = window.open(url, "vortexWin", "width=900,height=700");
+
+    if (!win) {
+        alert("POP-UP BLOCKED! Click the icon in your address bar and 'Always allow'.");
+        return;
+    }
+
+    // Spam click every 0.5 seconds for a total of 1.5 seconds
+    let attempts = 0;
+    const spam = setInterval(() => {
+        attempts++;
+        try {
+            const btns = Array.from(win.document.querySelectorAll('button, div, span, a'));
+            const follow = btns.find(el => el.innerText.trim() === "Follow");
+
+            if (follow) {
+                follow.click();
+            }
+        } catch (e) {
+            // Page still loading
+        }
+
+        // Close after 1.5 seconds (3 click attempts)
+        if (attempts >= 3) {
+            clearInterval(spam);
+            win.close();
+            id++;
+            
+            // CLEAR CONSOLE AND LOG CURRENT
+            console.clear();
+            console.log("Current Profile: " + (id - 1));
+            
+            runVortexBot();
+        }
+    }, 500); 
+}
+
+runVortexBot();
