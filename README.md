@@ -1,3 +1,3 @@
-copy and past these texts into the console window and press enter
+copy and past these texts into the console window and press enter (u can also change how many users to check as the website gets bigger)
 
 btw my username on vortex is sammy12747 im trying to become the most followed person on vortex so plz follow me
