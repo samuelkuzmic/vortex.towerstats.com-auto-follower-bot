@@ -1,0 +1,45 @@
+let id = 1;
+const maxId = 2500;
+
+function runVortexBot() {
+  if (id > maxId) {
+    console.clear();
+    console.log(" Finished 2500 profiles.");
+    return;
+  }
+
+  let url = "https://vortex.towerstats.com/users/" + id + "/profile";
+  let win = window.open(url, "vortexWin", "width=900,height=700");
+
+  if (!win) {
+    alert("POP-UP BLOCKED! Click the icon in your address bar and 'Always allow'.");
+    return;
+  }
+
+  let attempts = 0;
+  const spam = setInterval(() => {
+    attempts++;
+    try {
+      const btns = Array.from(win.document.querySelectorAll('button, div, span, a'));
+      // Updated the line below to search for "Add Friend"
+      const addFriend = btns.find(el => el.innerText.trim() === "Add Friend");
+      
+      if (addFriend) {
+        addFriend.click();
+      }
+    } catch (e) {
+      // Page still loading or Cross-Origin policy blocking access
+    }
+
+    if (attempts >= 3) {
+      clearInterval(spam);
+      win.close();
+      id++;
+      console.clear();
+      console.log("Current Profile: " + (id - 1));
+      runVortexBot();
+    }
+  }, 500);
+}
+
+runVortexBot();
